@@ -28,3 +28,19 @@ nav a:hover {
 h1 {
   color: #004080;
 }
+footer {
+  margin-top: 60px;
+  text-align: center;
+  font-size: 0.8em;
+  color: #ccc;
+}
+
+.footer-links a {
+  color: #ccc;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
