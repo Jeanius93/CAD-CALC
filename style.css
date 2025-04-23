@@ -8,14 +8,14 @@ body {
 }
 
 nav {
-  background-color: #004080;
+  background-color: #4682B4; /* SteelBlue */
   padding: 10px;
   margin-bottom: 20px;
   text-align: center;
 }
 
 nav a {
-  color: white;
+  color: #FFFFF0; /* Ivory */
   margin: 0 10px;
   text-decoration: none;
   font-weight: bold;
