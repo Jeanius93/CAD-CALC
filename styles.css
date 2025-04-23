@@ -1,1 +1,127 @@
+/* Allgemeine Layout-Einstellungen */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+/* Header */
+header {
+    background-color: #7a1e2a; /* Weinrot */
+    color: #333;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+}
+
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header .hamburger-menu {
+    display: none; /* Standardmäßig nicht sichtbar */
+    flex-direction: column;
+    cursor: pointer;
+}
+
+header .hamburger-menu span {
+    background-color: #333;
+    height: 4px;
+    width: 25px;
+    margin: 5px 0;
+}
+
+/* Home Section */
+.home {
+    background: url('blueprints.jpg') no-repeat center center/cover;
+    color: #fff;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.home h1 {
+    font-size: 48px;
+}
+
+.home button {
+    background-color: #7a1e2a;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.home button a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Sektionen */
+section {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+section h2 {
+    font-size: 32px;
+    color: #7a1e2a; /* Weinrot */
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Mobile Anpassungen */
+@media (max-width: 768px) {
+    header nav ul {
+        display: none;
+    }
+
+    header .hamburger-menu {
+        display: flex;
+    }
+
+    header nav ul.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        background-color: #7a1e2a;
+        top: 60px;
+        right: 0;
+        width: 200px;
+        padding: 10px;
+    }
+
+    header nav ul li {
+        margin: 10px 0;
+    }
+}
