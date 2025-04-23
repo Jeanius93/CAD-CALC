@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Schnittkraftrechner – CAD-CALC</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .kraftblock {
+      margin-top: 20px;
+    }
+    .kraftwert {
+      font-weight: bold;
+      font-size: 1.4em;
+    }
+    .einheit {
+      display: block;
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
 </head>
 <body>
   <nav>
@@ -18,74 +32,95 @@
 
   <form onsubmit="berechneKraft(); return false;">
     <label for="material">Material:</label>
-<select id="material">
-  <optgroup label="Kaltwalzstähle (Umformqualität)">
-    <option value="270">DC01 (Rm ≈ 270 N/mm²)</option>
-    <option value="310">DC03 (Rm ≈ 310 N/mm²)</option>
-    <option value="340">DC04 (Rm ≈ 340 N/mm²)</option>
-  </optgroup>
-
-  <optgroup label="Baustähle nach EN 10025">
-    <option value="370">S235JR (Rm ≈ 370 N/mm²)</option>
-    <option value="470">S275JR (Rm ≈ 470 N/mm²)</option>
-    <option value="510">S355JR (Rm ≈ 510 N/mm²)</option>
-    <option value="550">S420MC (Rm ≈ 550 N/mm²)</option>
-    <option value="600">S500MC (Rm ≈ 600 N/mm²)</option>
-    <option value="650">S550MC (Rm ≈ 650 N/mm²)</option>
-  </optgroup>
-
-  <optgroup label="Vergütungs- & Werkzeugstähle">
-    <option value="600">C45 (Rm ≈ 600 N/mm²)</option>
-    <option value="750">42CrMo4 (Rm ≈ 750 N/mm²)</option>
-  </optgroup>
-
-  <optgroup label="Edelstahl (rostfrei)">
-    <option value="500">X5CrNi18-10 / 1.4301 (Rm ≈ 500 N/mm²)</option>
-    <option value="700">X2CrNiMo17-12-2 / 1.4404 (Rm ≈ 700 N/mm²)</option>
-  </optgroup>
-
-  <optgroup label="Aluminium">
-    <option value="250">EN AW-1050A (weich, Rm ≈ 250 N/mm²)</option>
-    <option value="300">EN AW-6082 T6 (hart, Rm ≈ 300 N/mm²)</option>
-  </optgroup>
-
-  <optgroup label="Sonstige">
-    <option value="400">Standard-Stahl (Rm = 400 N/mm²)</option>
-  </optgroup>
-</select>
-
+    <select id="material">
+      <optgroup label="Kaltwalzstähle (Umformqualität)">
+        <option value="270">DC01 (Rm ≈ 270 N/mm²)</option>
+        <option value="310">DC03 (Rm ≈ 310 N/mm²)</option>
+        <option value="340">DC04 (Rm ≈ 340 N/mm²)</option>
+      </optgroup>
+      <optgroup label="Baustähle nach EN 10025">
+        <option value="370">S235JR (Rm ≈ 370 N/mm²)</option>
+        <option value="470">S275JR (Rm ≈ 470 N/mm²)</option>
+        <option value="510">S355JR (Rm ≈ 510 N/mm²)</option>
+        <option value="550">S420MC (Rm ≈ 550 N/mm²)</option>
+        <option value="600">S500MC (Rm ≈ 600 N/mm²)</option>
+        <option value="650">S550MC (Rm ≈ 650 N/mm²)</option>
+      </optgroup>
+      <optgroup label="Vergütungs- & Werkzeugstähle">
+        <option value="600">C45 (Rm ≈ 600 N/mm²)</option>
+        <option value="750">42CrMo4 (Rm ≈ 750 N/mm²)</option>
+      </optgroup>
+      <optgroup label="Edelstahl (rostfrei)">
+        <option value="500">X5CrNi18-10 / 1.4301 (Rm ≈ 500 N/mm²)</option>
+        <option value="700">X2CrNiMo17-12-2 / 1.4404 (Rm ≈ 700 N/mm²)</option>
+      </optgroup>
+      <optgroup label="Aluminium">
+        <option value="250">EN AW-1050A (weich, Rm ≈ 250 N/mm²)</option>
+        <option value="300">EN AW-6082 T6 (hart, Rm ≈ 300 N/mm²)</option>
+      </optgroup>
+      <optgroup label="Sonstige">
+        <option value="400">Standard-Stahl (Rm = 400 N/mm²)</option>
+      </optgroup>
+    </select>
     <br><br>
 
-    <label for="umfang">Stempelumfang U (in mm):</label>
+    <label for="umfang">Stempelumfang U (mm):</label>
     <input type="number" id="umfang" required>
     <br><br>
 
-    <label for="dicke">Blechdicke s (in mm):</label>
+    <label for="dicke">Blechdicke s (mm):</label>
     <input type="number" id="dicke" required>
     <br><br>
 
-    <button type="submit">Schnittkraft berechnen</button>
+    <label for="abstreifer">Abstreifkraft (% von Schnittkraft):</label>
+    <select id="abstreifer">
+      <option value="0.08">8 %</option>
+      <option value="0.09">9 %</option>
+      <option value="0.10">10 %</option>
+      <option value="0.11">11 %</option>
+      <option value="0.12">12 %</option>
+      <option value="0.13">13 %</option>
+      <option value="0.14">14 %</option>
+      <option value="0.15">15 %</option>
+    </select>
+    <br><br>
+
+    <button type="submit">Berechnen</button>
   </form>
 
-  <h2 id="ergebnis"></h2>
+  <div id="ausgabe" class="kraftblock"></div>
 
   <script>
     function berechneKraft() {
       const Rm = parseFloat(document.getElementById("material").value);
       const U = parseFloat(document.getElementById("umfang").value);
       const s = parseFloat(document.getElementById("dicke").value);
+      const faktor = parseFloat(document.getElementById("abstreifer").value);
 
-      if (isNaN(Rm) || isNaN(U) || isNaN(s)) {
-        document.getElementById("ergebnis").textContent = "Bitte alle Felder korrekt ausfüllen.";
+      if (isNaN(Rm) || isNaN(U) || isNaN(s) || isNaN(faktor)) {
+        document.getElementById("ausgabe").innerHTML = "<p>Bitte alle Felder korrekt ausfüllen.</p>";
         return;
       }
 
-      const tauMax = 0.8 * Rm;
+      const tau = 0.8 * Rm;
       const S = U * s;
-      const F = S * tauMax;
+      const Fs = S * tau;
+      const Fa = Fs * faktor;
+      const Fges = Fs + Fa;
 
-      document.getElementById("ergebnis").textContent = 
-        `Die Schnittkraft beträgt ca. ${F.toFixed(2)} N.`;
+      function formatKraft(F) {
+        const Ftonne = F / 10000; // 1 Tonne = 10,000 N
+        const FkN = F / 1000;
+        return `<div class="kraftwert">${Ftonne.toFixed(2)} t</div>
+                <span class="einheit">(${FkN.toFixed(2)} kN / ${F.toFixed(0)} N)</span>`;
+      }
+
+      document.getElementById("ausgabe").innerHTML = `
+        <h2>Ergebnisse:</h2>
+        <p><strong>Schnittkraft:</strong><br>${formatKraft(Fs)}</p>
+        <p><strong>Abstreifkraft (${(faktor*100).toFixed(0)} %):</strong><br>${formatKraft(Fa)}</p>
+        <p><strong>Gesamtpresskraft:</strong><br>${formatKraft(Fges)}</p>
+      `;
     }
   </script>
 </body>
