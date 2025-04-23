@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toleranzrechner – CAD-CALC</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .result-box {
+      margin-top: 20px;
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+    }
+    .result-box h2 {
+      margin-bottom: 10px;
+    }
+    .highlight {
+      font-weight: bold;
+      color: #004080;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Start</a> |
+    <a href="tools.html">Tools</a> |
+    <a href="schnittkraft.html">Schnittkraft</a> |
+    <a href="toleranzrechner.html">Toleranz</a> |
+    <a href="about.html">Über</a> |
+    <a href="impressum.html">Impressum</a> |
+    <a href="datenschutz.html">Datenschutz</a>
+  </nav>
+
+  <h1>Toleranzfeld-Rechner (ISO 286)</h1>
+
+  <form onsubmit="berechneToleranz(); return false;">
+    <label for="nennmass">Nennmaß (mm):</label>
+    <input type="number" id="nennmass" min="1" max="150" required>
+    <br><br>
+
+    <label for="bohrung">Bohrung (z. B. H7):</label>
+    <select id="bohrung">
+      <option value="H7">H7</option>
+      <option value="H8">H8</option>
+      <option value="H9">H9</option>
+    </select>
+    <br><br>
+
+    <label for="welle">Welle (z. B. h6):</label>
+    <select id="welle">
+      <option value="h6">h6</option>
+      <option value="h7">h7</option>
+      <option value="h8">h8</option>
+      <option value="js6">js6</option>
+      <option value="js7">js7</option>
+    </select>
+    <br><br>
+
+    <button type="submit">Berechnen</button>
+  </form>
+
+  <div id="ergebnis" class="result-box"></div>
+
+  <script>
+    const toleranzen = {
+      H7: { upper: 0.035, lower: 0 },
+      H8: { upper: 0.054, lower: 0 },
+      H9: { upper: 0.087, lower: 0 },
+      h6: { upper: 0, lower: -0.016 },
+      h7: { upper: 0, lower: -0.025 },
+      h8: { upper: 0, lower: -0.039 },
+      js6: { upper: 0.008, lower: -0.008 },
+      js7: { upper: 0.012, lower: -0.012 }
+    };
+
+    function berechneToleranz() {
+      const nennmass = parseFloat(document.getElementById("nennmass").value);
+      const bohrung = document.getElementById("bohrung").value;
+      const welle = document.getElementById("welle").value;
+
+      if (nennmass < 1 || nennmass > 150 || isNaN(nennmass)) {
+        document.getElementById("ergebnis").innerHTML = "Nur Nennmaße zwischen 1 und 150 mm erlaubt.";
+        return;
+      }
+
+      const b = toleranzen[bohrung];
+      const w = toleranzen[welle];
+
+      const bohrungMin = nennmass + b.lower;
+      const bohrungMax = nennmass + b.upper;
+      const welleMin = nennmass + w.lower;
+      const welleMax = nennmass + w.upper;
+
+      let passung = "Übergang";
+      if (welleMax < bohrungMin) passung = "Spielpassung";
+      if (welleMin > bohrungMax) passung = "Übermaßpassung";
+
+      document.getElementById("ergebnis").innerHTML = `
+        <h2>Ergebnisse für ${nennmass.toFixed(2)} mm:</h2>
+        <p><strong>Bohrung ${bohrung}</strong>:<br>
+        Min: <span class="highlight">${bohrungMin.toFixed(3)} mm</span>,
+        Max: <span class="highlight">${bohrungMax.toFixed(3)} mm</span></p>
+        
+        <p><strong>Welle ${welle}</strong>:<br>
+        Min: <span class="highlight">${welleMin.toFixed(3)} mm</span>,
+        Max: <span class="highlight">${welleMax.toFixed(3)} mm</span></p>
+
+        <p><strong>Passungsart:</strong> <span class="highlight">${passung}</span></p>
+      `;
+    }
+  </script>
+</body>
+</html>
